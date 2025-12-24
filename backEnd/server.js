@@ -22,6 +22,7 @@ import { setupAssociations } from './models/associations.js';
 // Load environment variables
 dotenv.config();
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

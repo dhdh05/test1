@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Frontend Panels - Hi Math</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #31c48d;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .info {
+            background: #e0e7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status.online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧪 Test Frontend Panels - Hi Math</h1>
+
+        <div class="info">
+            <strong>📋 Hướng dẫn:</strong>
+            <ul>
+                <li>Đảm bảo backend đang chạy tại <code>http://localhost:5000</code></li>
+                <li>Đăng nhập trước khi test các API cần authentication</li>
+                <li>Kiểm tra Console (F12) để xem chi tiết requests</li>
+            </ul>
+        </div>
+
+        <!-- Backend Status -->
+        <div class="test-section">
+            <h2>🔌 Backend Status <span id="backendStatus" class="status offline">Offline</span></h2>
+            <button onclick="checkBackend()">Kiểm tra Backend</button>
+            <div id="backendResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="test-section">
+            <h2>🔐 Authentication</h2>
+            <div>
+                <input type="text" id="loginUsername" placeholder="Username"
+                    style="padding: 10px; margin: 5px; border-radius: 8px; border: 1px solid #ddd;">
+                <input type="password" id="loginPassword" placeholder="Password"
+                    style="padding: 10px; margin: 5px; border-radius: 8px; border: 1px solid #ddd;">
+                <button onclick="testLogin()">Đăng nhập</button>
+                <button onclick="testLogout()">Đăng xuất</button>
+            </div>
+            <div id="authResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- Game Levels -->
+        <div class="test-section">
+            <h2>🎮 Game Levels API</h2>
+            <button onclick="testGameLevels('hoc-so')">Học Số</button>
+            <button onclick="testGameLevels('ghep-so')">Ghép Số</button>
+            <button onclick="testGameLevels('chan-le')">Chẵn Lẻ</button>
+            <button onclick="testGameLevels('so-sanh')">So Sánh</button>
+            <button onclick="testGameLevels('xep-so')">Xếp Số</button>
+            <div id="gameLevelsResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- Progress -->
+        <div class="test-section">
+            <h2>📊 Progress API</h2>
+            <button onclick="testStats()">Thống kê</button>
+            <button onclick="testProgress()">Tiến độ</button>
+            <button onclick="testResults()">Lịch sử</button>
+            <button onclick="testAchievements()">Thành tích</button>
+            <div id="progressResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="test-section">
+            <h2>🏆 Leaderboard API</h2>
+            <button onclick="testLeaderboard('overall')">Tổng thể</button>
+            <button onclick="testLeaderboard('weekly')">Tuần này</button>
+            <button onclick="testLeaderboard('monthly')">Tháng này</button>
+            <div id="leaderboardResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        let currentToken = localStorage.getItem('hm_is_authed');
+        let currentStudentId = localStorage.getItem('STUDENT_ID');
+
+        // Helper function to display results
+        function displayResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+
+            if (isError) {
+                element.innerHTML = `<div class="error">❌ Error: ${data}</div>`;
+            } else {
+                element.innerHTML = `
+                    <div class="success">✅ Success</div>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            }
+        }
+
+        // Check backend status
+        async function checkBackend() {
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+
+                document.getElementById('backendStatus').className = 'status online';
+                document.getElementById('backendStatus').textContent = 'Online';
+                displayResult('backendResult', data);
+            } catch (error) {
+                document.getElementById('backendStatus').className = 'status offline';
+                document.getElementById('backendStatus').textContent = 'Offline';
+                displayResult('backendResult', error.message, true);
+            }
+        }
+
+        // Test login
+        async function testLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                displayResult('authResult', 'Vui lòng nhập username và password', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentToken = data.token;
+                    currentStudentId = data.user?.id || data.studentId;
+                    localStorage.setItem('hm_is_authed', currentToken);
+                    localStorage.setItem('STUDENT_ID', currentStudentId);
+                    displayResult('authResult', data);
+                } else {
+                    displayResult('authResult', data.message || 'Login failed', true);
+                }
+            } catch (error) {
+                displayResult('authResult', error.message, true);
+            }
+        }
+
+        // Test logout
+        function testLogout() {
+            currentToken = null;
+            currentStudentId = null;
+            localStorage.removeItem('hm_is_authed');
+            localStorage.removeItem('STUDENT_ID');
+            displayResult('authResult', { message: 'Logged out successfully' });
+        }
+
+        // Test game levels
+        async function testGameLevels(gameType) {
+            try {
+                const response = await fetch(`${API_URL}/api/games/levels/${gameType}`);
+                const data = await response.json();
+                displayResult('gameLevelsResult', data);
+            } catch (error) {
+                displayResult('gameLevelsResult', error.message, true);
+            }
+        }
+
+        // Test stats
+        async function testStats() {
+            if (!currentToken || !currentStudentId) {
+                displayResult('progressResult', 'Vui lòng đăng nhập trước', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/games/stats/${currentStudentId}`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                displayResult('progressResult', data);
+            } catch (error) {
+                displayResult('progressResult', error.message, true);
+            }
+        }
+
+        // Test progress
+        async function testProgress() {
+            if (!currentToken || !currentStudentId) {
+                displayResult('progressResult', 'Vui lòng đăng nhập trước', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/games/progress/${currentStudentId}`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                displayResult('progressResult', data);
+            } catch (error) {
+                displayResult('progressResult', error.message, true);
+            }
+        }
+
+        // Test results
+        async function testResults() {
+            if (!currentToken || !currentStudentId) {
+                displayResult('progressResult', 'Vui lòng đăng nhập trước', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/games/results/${currentStudentId}?limit=10`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                displayResult('progressResult', data);
+            } catch (error) {
+                displayResult('progressResult', error.message, true);
+            }
+        }
+
+        // Test achievements
+        async function testAchievements() {
+            if (!currentToken || !currentStudentId) {
+                displayResult('progressResult', 'Vui lòng đăng nhập trước', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/games/achievements/${currentStudentId}`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                displayResult('progressResult', data);
+            } catch (error) {
+                displayResult('progressResult', error.message, true);
+            }
+        }
+
+        // Test leaderboard
+        async function testLeaderboard(period) {
+            const headers = currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {};
+
+            try {
+                const response = await fetch(`${API_URL}/api/games/leaderboard?period=${period}`, { headers });
+                const data = await response.json();
+                displayResult('leaderboardResult', data);
+            } catch (error) {
+                displayResult('leaderboardResult', error.message, true);
+            }
+        }
+
+        // Auto-check backend on load
+        window.addEventListener('load', () => {
+            checkBackend();
+
+            // Update auth status
+            if (currentToken && currentStudentId) {
+                displayResult('authResult', {
+                    message: 'Already logged in',
+                    studentId: currentStudentId
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { User, Student, Teacher } from '../models/index.js';
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'your_jwt_secret', {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'funedu', {
     expiresIn: process.env.JWT_EXPIRE || '7d'
   });
 };

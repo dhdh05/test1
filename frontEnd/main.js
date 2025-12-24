@@ -201,13 +201,13 @@
       const password = form.password?.value;
       const fullName = form.full_name?.value;
       const passwordConfirm = form.password_confirm?.value;
-      
+
       // Validation
       if (!username || !password) {
         alert('Vui lòng nhập username và password');
         return;
       }
-      
+
       if (!isLogin) {
         if (!fullName) {
           alert('Vui lòng nhập họ tên');
@@ -218,34 +218,34 @@
           return;
         }
       }
-      
+
       try {
-        const url = isLogin 
+        const url = isLogin
           ? 'http://localhost:5000/api/auth/login'
           : 'http://localhost:5000/api/auth/register';
-        
-        const body = isLogin 
+
+        const body = isLogin
           ? { username, password }
           : { username, password, full_name: fullName };
-        
+
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
-        
+
         const data = await response.json();
-        
+
         if (response.ok) {
           localStorage.setItem(AUTH_KEY, data.token);
           localStorage.setItem('STUDENT_ID', data.user?.id || data.studentId);
           localStorage.setItem('USER_NAME', data.user?.name || data.user?.full_name || username);
           closeAuth();
           alert(`${isLogin ? '✅ Đăng nhập' : '✅ Đăng ký'} thành công! Xin chào ${data.user?.name || data.user?.full_name || username} 👋`);
-          
+
           // Reset form
           form.reset();
-          
+
           setTimeout(() => location.reload(), 500);
         } else {
           alert(`❌ Lỗi: ${data.message || 'Thao tác thất bại'}`);
@@ -298,7 +298,7 @@
       delete content._ghepCleanup;
     }
     if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
-      try { content._mountedPanel.unmount(content); } catch(e) { console.warn('Error during panel unmount', e); }
+      try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
       delete content._mountedPanel;
     }
 
@@ -313,7 +313,7 @@
       content.innerHTML = '<div class="loading">Đang tải...</div>';
       import('./panels/hoc-so/panel.js').then(mod => {
         if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
-          try { content._mountedPanel.unmount(content); } catch(e) { console.warn('Error during panel unmount', e); }
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
           delete content._mountedPanel;
         }
         mod.mount(content);
@@ -330,7 +330,7 @@
       content.innerHTML = '<div class="loading">Đang tải...</div>';
       import('./panels/ghep-so/panel.js').then(mod => {
         if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
-          try { content._mountedPanel.unmount(content); } catch(e) { console.warn('Error during panel unmount', e); }
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
           delete content._mountedPanel;
         }
         mod.mount(content);
@@ -346,13 +346,61 @@
       content.innerHTML = '<div class="loading">Đang tải...</div>';
       import('./panels/chan-le/panel.js').then(mod => {
         if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
-          try { content._mountedPanel.unmount(content); } catch(e) { console.warn('Error during panel unmount', e); }
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
           delete content._mountedPanel;
         }
         mod.mount(content);
         content._mountedPanel = mod;
       }).catch(err => {
         console.error('Failed to load chan-le panel', err);
+        content.innerHTML = '<div class="panel"><h2>Lỗi khi tải panel</h2></div>';
+      });
+      return;
+    }
+
+    if (key === 'games') {
+      content.innerHTML = '<div class="loading">Đang tải...</div>';
+      import('./panels/game-selection/panel.js').then(mod => {
+        if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
+          delete content._mountedPanel;
+        }
+        mod.mount(content);
+        content._mountedPanel = mod;
+      }).catch(err => {
+        console.error('Failed to load game-selection panel', err);
+        content.innerHTML = '<div class="panel"><h2>Lỗi khi tải panel</h2></div>';
+      });
+      return;
+    }
+
+    if (key === 'progress') {
+      content.innerHTML = '<div class="loading">Đang tải...</div>';
+      import('./panels/progress/panel.js').then(mod => {
+        if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
+          delete content._mountedPanel;
+        }
+        mod.mount(content);
+        content._mountedPanel = mod;
+      }).catch(err => {
+        console.error('Failed to load progress panel', err);
+        content.innerHTML = '<div class="panel"><h2>Lỗi khi tải panel</h2></div>';
+      });
+      return;
+    }
+
+    if (key === 'leaderboard') {
+      content.innerHTML = '<div class="loading">Đang tải...</div>';
+      import('./panels/leaderboard/panel.js').then(mod => {
+        if (content._mountedPanel && typeof content._mountedPanel.unmount === 'function') {
+          try { content._mountedPanel.unmount(content); } catch (e) { console.warn('Error during panel unmount', e); }
+          delete content._mountedPanel;
+        }
+        mod.mount(content);
+        content._mountedPanel = mod;
+      }).catch(err => {
+        console.error('Failed to load leaderboard panel', err);
         content.innerHTML = '<div class="panel"><h2>Lỗi khi tải panel</h2></div>';
       });
       return;
@@ -383,6 +431,8 @@
     'practice-tinh-toan': 'Luyện tập — Tính toán',
     'practice-so-sanh': 'Luyện tập — So sánh',
     'games': 'Trò chơi',
+    'progress': 'Tiến độ',
+    'leaderboard': 'Bảng xếp hạng',
     'users': 'Người dùng',
     'digits': 'Học chữ số',
     'compare': 'Phép so sánh',

@@ -36,7 +36,7 @@ Tôi đã chuẩn bị đầy đủ để bạn deploy Hi Math lên cloud!
 
 ---
 
-## 🎯 Deploy ngay trong 10 phút!
+## 🎯 Deploy ngay trong 15 phút!
 
 ### Bước 1: Đọc hướng dẫn
 ```bash
@@ -45,19 +45,26 @@ DEPLOY_NHANH.md
 ```
 
 ### Bước 2: Tạo tài khoản
-- Railway (Database): https://railway.app
-- Render (Backend + Frontend): https://render.com
+- **TiDB Cloud** (Database): https://tidbcloud.com - MIỄN PHÍ FOREVER!
+- **Render** (Backend + Frontend): https://render.com
 
 ### Bước 3: Follow hướng dẫn
 Làm theo từng bước trong `DEPLOY_NHANH.md`
+
+**Lưu ý:** TiDB Cloud thay thế Railway vì:
+- ✅ Miễn phí mãi mãi (không cần credit card)
+- ✅ 5GB storage
+- ✅ MySQL compatible
+- ✅ Serverless auto-scale
 
 ---
 
 ## 📋 Checklist
 
-- [ ] Tạo tài khoản Railway
+- [ ] Tạo tài khoản TiDB Cloud
 - [ ] Tạo tài khoản Render  
-- [ ] Deploy MySQL trên Railway
+- [ ] Tạo Serverless Cluster trên TiDB Cloud
+- [ ] Copy connection credentials
 - [ ] Push code lên GitHub
 - [ ] Deploy Backend trên Render
 - [ ] Seed database
@@ -72,7 +79,7 @@ Làm theo từng bước trong `DEPLOY_NHANH.md`
 Bạn sẽ có:
 - ✅ **Frontend:** `https://hi-math-frontend-xyz.onrender.com`
 - ✅ **Backend:** `https://hi-math-backend-abc.onrender.com`
-- ✅ **Database:** Railway MySQL
+- ✅ **Database:** TiDB Cloud Serverless (MySQL-compatible)
 
 ---
 

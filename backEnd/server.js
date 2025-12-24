@@ -13,6 +13,7 @@ import testRoutes from './routes/testRoutes.js';
 import progressRoutes from './routes/progressRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import gameRoutes from './routes/gameRoutes.js';
+import seedRoutes from './routes/seedRoutes.js';
 
 // Import database
 import { sequelize } from './config/database.js';
@@ -63,6 +64,7 @@ app.use('/api/tests', testRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/games', gameRoutes);
+app.use('/api/seed', seedRoutes);
 
 // 404 handler
 app.use((req, res) => {

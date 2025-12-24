@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || 'http://localhost:3000',
   credentials: true
 }));
 
@@ -40,9 +40,18 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Health check endpoint
+// Health check endpoints
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Hi Math Backend is running' });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Hi Math Backend is running',
+    timestamp: new Date().toISOString(),
+    database: 'connected'
+  });
 });
 
 // Routes
@@ -64,8 +73,8 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
+    error: process.env.NODE_ENV === 'production'
+      ? 'Internal server error'
       : err.message
   });
 });

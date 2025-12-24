@@ -1,3 +1,4 @@
+import { sequelize } from '../config/database.js';
 import User from './User.js';
 import Student from './Student.js';
 import Teacher from './Teacher.js';
@@ -14,6 +15,7 @@ import StudentGameProgress from './StudentGameProgress.js';
 import GameAchievement from './GameAchievement.js';
 
 export {
+  sequelize,
   User,
   Student,
   Teacher,

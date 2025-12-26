@@ -1,0 +1,61 @@
+# ==================================
+# 1. CÁC THƯ VIỆN & MODULE (Nặng - Không up lên)
+# ==================================
+node_modules/
+jspm_packages/
+# Nếu dùng Python backend thì bỏ comment 2 dòng dưới:
+# venv/
+# __pycache__/
+
+# ==================================
+# 2. FILE BẢO MẬT & MÔI TRƯỜNG (Tuyệt đối giữ bí mật)
+# ==================================
+.env
+.env.test
+.env.production
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# ==================================
+# 3. KẾT QUẢ BUILD & BIÊN DỊCH (File này máy tự tạo ra)
+# ==================================
+build/
+dist/
+out/
+coverage/
+.next/
+.nuxt/
+.output/
+
+# ==================================
+# 4. FILE RÁC CỦA HỆ ĐIỀU HÀNH & IDE (Không cần thiết)
+# ==================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# ==================================
+# 5. LOGS (File báo cáo lỗi)
+# ==================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==================================
+# 6. KHÁC (File tạm)
+# ==================================
+.cache/
+tmp/
+temp/

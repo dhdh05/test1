@@ -128,4 +128,4 @@ Dự án được triển khai theo mô hình **Frontend riêng - Backend riêng
 ---
 
 ## 📜 License
-Dự án được phát triển bởi **Huy(dhdh)** cho môn học Kỹ thuật phần mềm ứng dụng.
+Dự án được phát triển bởi **Đỗ Đức Huy & Phan Công Trung** cho môn học Kỹ thuật phần mềm ứng dụng.
